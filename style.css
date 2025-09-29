@@ -539,4 +539,76 @@ body {
         padding: 12px 25px;
         font-size: 1rem;
     }
+
+}
+/* Estilos para a seção principal onde as imagens serão inseridas */
+.hero-section {
+    position: relative; /* Essencial para posicionar os filhos de forma absoluta */
+    overflow: hidden; /* Garante que elementos fora da seção não apareçam */
+    padding-bottom: 250px; /* Adiciona espaço para o Naruto na parte de baixo */
+    /* Você pode ajustar o padding-top se o Naruto estiver cobrindo o texto */
+}
+
+/* Contêiner para as imagens para facilitar o posicionamento */
+.hero-images {
+    position: absolute; /* Permite posicionar este contêiner de forma precisa */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Permite que o usuário interaja com o texto e o botão que estão por baixo */
+    z-index: 1; /* Garante que as imagens fiquem acima do fundo, mas abaixo do texto principal */
+}
+
+.naruto-image {
+    position: absolute; /* Permite posicionar a imagem de forma precisa */
+    bottom: -10px; /* Ajuste este valor para mover o Naruto para cima ou para baixo */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Ajuste fino para centralizar */
+    width: 600px; /* Tamanho da imagem, ajuste se necessário */
+    max-width: 90%; /* Garante que a imagem não ultrapasse a largura da tela em dispositivos menores */
+    height: auto; /* Mantém a proporção da imagem */
+    z-index: 2; /* Garante que o Naruto apareça sobre a tinta, se a tinta estiver na mesma altura */
+}
+
+.tinta-image {
+    position: absolute; /* Permite posicionar a imagem de forma precisa */
+    top: 20px; /* Distância do topo da seção */
+    right: 50px; /* Distância da direita da seção */
+    width: 250px; /* Tamanho da imagem da tinta, ajuste se necessário */
+    max-width: 40%; /* Garante que a imagem da tinta se adapte a telas menores */
+    height: auto; /* Mantém a proporção da imagem */
+    opacity: 0.7; /* Adiciona uma leve transparência para que a tinta não chame muita atenção */
+    z-index: 1; /* Garante que a tinta apareça abaixo do Naruto e do conteúdo principal */
+}
+
+/* Media Queries para ajustar o tamanho e posição das imagens em telas menores (celulares) */
+@media (max-width: 768px) {
+    .naruto-image {
+        width: 400px; /* Diminui o Naruto para telas menores */
+        bottom: -50px; /* Ajusta a posição para telas menores */
+    }
+    .tinta-image {
+        width: 150px; /* Diminui a tinta para telas menores */
+        top: 10px;
+        right: 20px;
+    }
+    .hero-section {
+        padding-bottom: 180px; /* Reduz o padding para telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .naruto-image {
+        width: 300px;
+        bottom: -80px;
+    }
+    .tinta-image {
+        width: 100px;
+        top: 5px;
+        right: 10px;
+    }
+    .hero-section {
+        padding-bottom: 150px;
+    }
 }
