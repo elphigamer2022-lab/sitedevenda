@@ -612,3 +612,74 @@ body {
         padding-bottom: 150px;
     }
 }
+/* Torna a seção hero a referência para o posicionamento das imagens */
+.hero-section {
+    position: relative;
+    padding-bottom: 250px; /* Adiciona espaço para a imagem do Naruto */
+}
+
+/* Contêiner para posicionar as imagens */
+.hero-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Permite que o usuário clique no conteúdo por trás da imagem */
+    z-index: 1; /* Coloca as imagens acima do fundo, mas abaixo do texto */
+}
+
+/* Estilos para a imagem do Naruto */
+.naruto-image {
+    position: absolute;
+    bottom: -10px; /* Ajusta a posição vertical do Naruto */
+    left: 50%; /* Centraliza o Naruto horizontalmente */
+    transform: translateX(-50%);
+    width: 600px;
+    max-width: 90%;
+    height: auto;
+    z-index: 2; /* Garante que o Naruto fique por cima da imagem de tinta */
+}
+
+/* Estilos para a imagem da tinta */
+.tinta-image {
+    position: absolute;
+    top: 20px;
+    right: 50px; /* Posiciona a imagem no canto superior direito */
+    width: 250px;
+    max-width: 40%;
+    height: auto;
+    opacity: 0.7; /* Deixa a tinta um pouco transparente */
+    z-index: 1;
+}
+
+/* Media queries para ajustar as imagens em telas menores */
+@media (max-width: 768px) {
+    .naruto-image {
+        width: 400px;
+        bottom: -50px;
+    }
+    .tinta-image {
+        width: 150px;
+        top: 10px;
+        right: 20px;
+    }
+    .hero-section {
+        padding-bottom: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .naruto-image {
+        width: 300px;
+        bottom: -80px;
+    }
+    .tinta-image {
+        width: 100px;
+        top: 5px;
+        right: 10px;
+    }
+    .hero-section {
+        padding-bottom: 150px;
+    }
+}
