@@ -78,6 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     }
+  regrasdagaleria
+});
+// Funcionalidade para o botão de regras da galeria
+const toggleButton = document.getElementById('toggle-rules');
+const rulesContent = document.getElementById('rules-content');
+
+if (toggleButton && rulesContent) {
+    toggleButton.addEventListener('click', () => {
+        rulesContent.classList.toggle('hidden');
+        if (rulesContent.classList.contains('hidden')) {
+            toggleButton.textContent = 'Ler Regras da Galeria';
+        } else {
+            toggleButton.textContent = 'Esconder Regras';
+        }
+    });
+}
 
     function handleDeleteImageClick(e) {
         const button = e.currentTarget;
@@ -252,3 +268,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializa todos os listeners quando a página carrega
     attachInteractionListeners();
 });
+main
