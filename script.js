@@ -58,6 +58,43 @@ document.addEventListener('DOMContentLoaded', () => {
         // C. Anexar Listeners para os Depoimentos
         attachTestimonialListeners();
     }
+        });
+
+        // B. Anexar Listeners de Excluir para a Galeria
+        document.querySelectorAll('.gallery-post-card .delete-button').forEach(button => {
+            button.removeEventListener('click', handleDeleteImageClick);
+            button.addEventListener('click', handleDeleteImageClick);
+        });
+
+        // C. Anexar Listeners para os Depoimentos
+        attachTestimonialListeners();
+    }
+
+
+    // ===============================================
+    // LÓGICA: GALERIA DE DESENHOS (Mantida)
+    // ===============================================
+
+    function createPostCardHTML(fileURL, postId, likes = 0) {
+        return `
+            <img src="${fileURL}" alt="Desenho de Aluno" class="post-image">
+            <div class="post-actions">
+                <button class="like-button" data-post-id="${postId}">
+                    <i class="far fa-heart"></i>
+                    <span class="like-count">${likes}</span>
+                </button>
+                <button class="delete-button" title="Excluir Desenho">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        `;
+    }
+  regrasdagaleria
+});
+// Funcionalidade para o botão de regras da galeria
+const toggleButton = document.getElementById('toggle-rules');
+const rulesContent = document.getElementById('rules-content');
+main
 
 
     // ===============================================
@@ -130,6 +167,60 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
+
+    function handleDeleteImageClick(e) {
+        const button = e.currentTarget;
+        if (confirm("Tem certeza que deseja remover este desenho da galeria?")) {
+            const postCard = button.closest('.gallery-post-card');
+            if (postCard) {
+                const slot = postCard.dataset.slot;
+                postCard.remove();
+                
+                const newUploadCard = document.createElement('div');
+                newUploadCard.className = 'gallery-upload-card gallery-item';
+                newUploadCard.dataset.slot = slot;
+                newUploadCard.innerHTML = `
+                    <label for="file-upload-${slot}" class="upload-label">
+                        <i class="fas fa-plus upload-icon"></i>
+                        <span class="upload-text">Postar Desenho</span>
+                    </label>
+                    <input type="file" id="file-upload-${slot}" accept="image/*" style="display: none;">
+                `;
+                
+                document.querySelector('.gallery-grid').appendChild(newUploadCard);
+                attachInteractionListeners(); 
+                console.log(`[FRONTEND SIMULAÇÃO - Desenho] Post ID ${postCard.dataset.postId} removido.`);
+            }
+        }
+    }
+
+    document.querySelectorAll('.gallery-upload-card').forEach(card => {
+        const slot = card.dataset.slot;
+        const fileInput = document.getElementById(`file-upload-${slot}`);
+
+        card.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'INPUT') { 
+                 fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const fileURL = URL.createObjectURL(file);
+                const postId = `img${Date.now()}`; 
+                
+                card.classList.remove('gallery-upload-card');
+                card.classList.add('gallery-post-card');
+                card.innerHTML = createPostCardHTML(fileURL, postId, 0); 
+                
+                attachInteractionListeners(); 
+                e.target.value = null; 
+            }
+        });
+    });
+main
 
 
     // ===============================================
@@ -251,4 +342,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicializa todos os listeners quando a página carrega
     attachInteractionListeners();
-});
+}); 
+main
