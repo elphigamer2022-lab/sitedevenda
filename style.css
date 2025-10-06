@@ -68,8 +68,6 @@ body {
     color: var(--primary-color);
 }
 
-/* A seção da barra de pesquisa foi removida */
-
 /* ============================ */
 /* Seções da Página Inicial    */
 /* ============================ */
@@ -107,7 +105,6 @@ body {
     background-color: #e55a5a;
 }
 
-/* Os estilos para a seção de cursos foram removidos */
 .testimonials-section, .gallery-section, .video-testimonial-section {
     padding: 4rem 0;
     text-align: center;
@@ -124,6 +121,16 @@ body {
     background-color: #ffffff;
 }
 
+/* ------------------------------------- */
+/* ESTILOS DA SEÇÃO DEPOIMENTOS INTERATIVOS */
+/* ------------------------------------- */
+
+.testimonial-description {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
 .testimonial-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -131,30 +138,148 @@ body {
 }
 
 .testimonial-card {
-    background-color: var(--background-color);
+    background-color: var(--card-background); /* White */
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-between; 
+    min-height: 250px; 
 }
 
-.testimonial-photo {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
+/* Estrutura do Depoimento Postado */
+.testimonial-header { 
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
+    padding-bottom: 0.5rem; 
+    border-bottom: 1px solid #eee; 
+}
+
+.testimonial-info { 
+    text-align: left;
+    width: 100%;
 }
 
 .testimonial-quote {
     font-style: italic;
     color: #555;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; 
+    text-align: left;
+    flex-grow: 1; 
 }
 
 .testimonial-author {
     font-weight: 600;
     color: var(--secondary-color);
+    font-size: 0.9rem;
 }
+
+/* Estilo para o Card de Adicionar Depoimento */
+.testimonial-add-card { 
+    background-color: var(--background-color); 
+    border: 3px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.testimonial-add-card:hover {
+    background-color: #e9e9e9;
+    border-color: var(--primary-color);
+}
+
+.add-testimonial-button { 
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.add-testimonial-icon { 
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s;
+}
+
+.testimonial-add-card:hover .add-testimonial-icon,
+.testimonial-add-card:hover p {
+    color: var(--primary-color);
+}
+
+/* Estilo para Ações (Likes, Edit, Delete e Estrelas no Rodapé) */
+.testimonial-actions { 
+    display: flex;
+    /* Alinha as estrelas à esquerda e os botões/likes à direita */
+    justify-content: space-between; 
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #eee; 
+    margin-top: auto; 
+}
+
+/* Estrelas de Avaliação no Rodapé */
+.star-rating.footer-rating { 
+    order: 1; /* Garante que as estrelas sejam o primeiro elemento (à esquerda) */
+    color: gold;
+    font-size: 1rem;
+}
+.star-rating.footer-rating i {
+    margin-right: 2px;
+}
+
+/* Agrupamento do Like e botões de gerenciamento à direita */
+.action-bar-right {
+    display: flex;
+    gap: 1.5rem; /* Espaço entre o like e o grupo de edit/delete */
+    align-items: center;
+    order: 2; /* Garante que este grupo seja o segundo elemento (à direita) */
+}
+
+
+.testimonial-actions .action-button { 
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #666;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0; 
+}
+
+.management-buttons { 
+    display: flex;
+    gap: 1rem;
+}
+
+/* Cores específicas para as ações */
+.testimonial-actions .like-button:hover {
+    color: var(--primary-color);
+}
+.testimonial-actions .like-button.liked i {
+    color: var(--primary-color);
+}
+.testimonial-actions .edit-button:hover {
+    color: #0093ff; /* Azul para editar */
+}
+.testimonial-actions .delete-button:hover {
+    color: #ff4d4d; /* Vermelho para remover */
+}
+
+/* ------------------------------------- */
+/* ESTILOS DA SEÇÃO GALERIA (Atualizados para interatividade) */
+/* ------------------------------------- */
 
 .gallery-description {
     font-size: 1.1rem;
@@ -168,24 +293,123 @@ body {
     gap: 1.5rem;
 }
 
+/* Estilo Base para Cards de Galeria */
 .gallery-item {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
+    overflow: hidden;
+    height: 380px; 
+    display: flex;
+    flex-direction: column;
 }
 
 .gallery-item:hover {
     transform: scale(1.02);
 }
 
+/* Card de Desenho Postado */
+.gallery-post-card {
+    background-color: var(--card-background);
+}
+
+.gallery-post-card .post-image {
+    width: 100%;
+    height: 300px; 
+    object-fit: cover;
+}
+
+/* Estilo para a área de ações (Like e Lixeira) */
+.gallery-post-card .post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-top: 1px solid #eee;
+    height: 80px; 
+}
+
+/* Estilo para o botão de Like da Galeria */
+.gallery-post-card .like-button {
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.gallery-post-card .like-button.liked i {
+    color: var(--primary-color);
+}
+
+.gallery-post-card .like-button:hover {
+    color: var(--primary-color);
+}
+
+/* Estilo para o botão de Excluir da Galeria */
+.gallery-post-card .delete-button {
+    background: none;
+    border: none;
+    color: #ccc; 
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.gallery-post-card .delete-button:hover {
+    color: #ff4d4d; 
+}
+
+/* Card de Upload (+) da Galeria */
+.gallery-upload-card {
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    border: 3px dashed #ccc;
+    cursor: pointer;
+    height: 380px; 
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.gallery-upload-card:hover {
+    background-color: #e9e9e9;
+    border-color: var(--primary-color);
+}
+
+.upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #999;
+    cursor: pointer;
+    padding: 20px;
+}
+
+.upload-icon {
+    font-size: 4rem;
+    color: #999;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+}
+
+.gallery-upload-card:hover .upload-icon,
+.gallery-upload-card:hover .upload-text {
+    color: var(--primary-color);
+}
+
+.upload-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
 /* ======================== */
 /* Seção de Vídeo Testemunho */
 /* ======================== */
 .video-testimonial-section {
-    background-color: var(--card-background); /* Ou var(--background-color) se preferir */
+    background-color: var(--card-background); 
     padding: 5rem 0;
     text-align: center;
 }
@@ -208,14 +432,13 @@ body {
 .video-wrapper {
     position: relative;
     width: 100%;
-    /* Proporção 16:9 para vídeos */
-    padding-bottom: 56.25%; /* (9 / 16) * 100 */
+    padding-bottom: 56.25%; 
     height: 0;
-    margin: 0 auto 3rem auto; /* Centraliza e adiciona espaço abaixo */
-    max-width: 900px; /* Largura máxima do vídeo */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra mais pronunciada */
+    margin: 0 auto 3rem auto; 
+    max-width: 900px; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
     border-radius: 10px;
-    overflow: hidden; /* Garante que a borda arredondada funcione com o iframe */
+    overflow: hidden; 
 }
 
 .video-wrapper iframe {
@@ -224,177 +447,34 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border: none; /* Remove a borda padrão do iframe */
+    border: none; 
 }
 
 .video-cta {
-    margin-top: 2rem; /* Espaçamento extra para o botão abaixo do vídeo */
+    margin-top: 2rem; 
     font-size: 1.1rem;
     padding: 15px 30px;
 }
 
 
 /* ============================== */
-/* Páginas de Curso, Sobre e Contato  */
+/* Páginas de Curso, Sobre e Blog  */
 /* ============================== */
-.course-details-section, .about-section, .contact-section, .blog-section {
+.course-details-section, .about-section, .blog-section {
     padding: 4rem 0;
 }
 
-.course-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 3rem;
-    margin-bottom: 3rem;
-}
-
-.course-banner {
-    width: 60%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.course-info {
-    flex-grow: 1;
-}
-
-.course-info h1 {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-}
-
-.tagline {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 1.5rem;
-}
-
-.price-and-buy {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.price-large {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.course-content-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 4rem;
-}
-
-.main-content h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.learning-list, .curriculum-list {
-    list-style-position: inside;
-    list-style-type: none;
-    margin-bottom: 2rem;
-}
-
-.learning-list li::before {
-    content: "✓";
-    color: var(--primary-color);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-}
-
-.curriculum-list li::before {
-    content: "●";
-    color: var(--primary-color);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-}
-
-.sidebar-content {
-    background-color: var(--card-background);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.instructor-bio {
-    text-align: center;
-}
-
-.instructor-photo {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-}
-
-.about-title, .contact-title, .blog-title {
+.blog-title {
     font-size: 2.8rem;
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.about-content {
-    display: flex;
-    gap: 3rem;
-    align-items: center;
-}
-
-.about-image {
-    width: 50%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.about-text p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-}
-
-.contact-description, .blog-subtitle {
+.blog-subtitle {
     text-align: center;
     font-size: 1.1rem;
     color: #666;
     margin-bottom: 2.5rem;
-}
-
-.contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.form-group input, .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.form-group textarea {
-    resize: vertical;
 }
 
 .blog-grid {
@@ -443,6 +523,7 @@ body {
     font-weight: 600;
 }
 
+
 /* ============================ */
 /* Rodapé (Comum)             */
 /* ============================ */
@@ -454,23 +535,22 @@ body {
 
 .footer-content {
     display: flex;
-    flex-direction: column; /* Altera a direção para coluna */
-    justify-content: center; /* Centraliza verticalmente */
-    align-items: center; /* Centraliza horizontalmente */
-    text-align: center; /* Centraliza o texto */
-    gap: 1.5rem; /* Espaçamento entre os itens */
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    gap: 1.5rem; 
 }
 
 .footer-info {
     font-size: 0.9rem;
-    /* Remove a margem fixa que causava o desalinhamento em telas maiores */
     margin: 0;
 }
 
 .social-links {
     display: flex;
     gap: 1.5rem;
-    justify-content: center; /* Centraliza os ícones */
+    justify-content: center; 
 }
 
 .social-links a {
@@ -539,74 +619,4 @@ body {
         padding: 12px 25px;
         font-size: 1rem;
     }
-
-}
-/* ======================== */
-/* Regras da Galeria (Expansível) */
-/* ======================== */
-
-.rules-container {
-    background-color: var(--card-background);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin: 0 auto 3rem;
-    max-width: 800px;
-    text-align: left;
-}
-
-.rules-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.rules-header p {
-    flex: 1;
-    margin: 0;
-    font-size: 1rem;
-    color: #555;
-}
-
-.toggle-button {
-    background-color: #f0f0f0;
-    color: var(--secondary-color);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-button:hover {
-    background-color: #e0e0e0;
-}
-
-.rules-content {
-    margin-top: 1.5rem;
-    /* Transições para o efeito de "abrir e fechar" */
-    max-height: 500px; /* Um valor alto para garantir que o conteúdo caiba */
-    overflow: hidden;
-    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
-    opacity: 1;
-}
-
-.rules-content.hidden {
-    max-height: 0;
-    opacity: 0;
-    margin-top: 0;
-}
-
-.gallery-rules-list {
-    list-style-type: disc;
-    padding-left: 20px;
-    font-size: 0.95rem;
-    line-height: 1.8;
-}
-
-.gallery-rules-list li {
-    margin-bottom: 0.5rem;
 }
