@@ -1,14 +1,155 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("O site 'Rascunho da Mente' foi carregado com sucesso!");
 
-    // Funcionalidade de upload de imagem na galeria
-    document.querySelectorAll('.gallery-item-container').forEach(container => {
-        const overlay = container.querySelector('.add-overlay');
-        const fileInput = container.querySelector('.file-input');
-        const imgElement = container.querySelector('.gallery-item');
-    
-        overlay.addEventListener('click', () => {
-            fileInput.click();
+    // ===============================================
+    // LÓGICA REUTILIZÁVEL: LIKE/CURTIR
+    // ===============================================
+
+    // Handler para o clique no Like (Reutilizado para Galeria e Depoimentos)
+    function handleLikeClick(e) {
+        e.preventDefault();
+        const button = e.currentTarget;
+        const icon = button.querySelector('i');
+        const countSpan = button.querySelector('.like-count');
+        let currentCount = parseInt(countSpan.textContent.trim());
+
+        const postId = button.dataset.postId;
+        // Determina se é um Depoimento ou um Desenho (para log de simulação)
+        const postType = button.closest('.testimonial-post-card') ? 'Depoimento' : 'Desenho';
+        
+        // Verifica se o item já está curtido (Simulação de 1 like por pessoa)
+        const isLiked = button.classList.contains('liked');
+
+        if (isLiked) {
+            // Descurtir
+            button.classList.remove('liked');
+            icon.classList.remove('fas', 'fa-heart'); // Coração cheio
+            icon.classList.add('far', 'fa-heart'); // Coração vazio
+            countSpan.textContent = currentCount - 1;
+
+            console.log(`[FRONTEND SIMULAÇÃO - ${postType}] Descurtiu o post ID: ${postId}. Novo total: ${currentCount - 1}`);
+
+        } else {
+            // Curtir
+            button.classList.add('liked');
+            icon.classList.remove('far', 'fa-heart'); // Coração vazio
+            icon.classList.add('fas', 'fa-heart'); // Coração cheio
+            countSpan.textContent = currentCount + 1;
+            
+            console.log(`[FRONTEND SIMULAÇÃO - ${postType}] Curtiu o post ID: ${postId}. Novo total: ${currentCount + 1}`);
+        }
+    }
+
+    // Função para anexar todos os listeners de interação
+    function attachInteractionListeners() {
+        
+        // A. Anexar Listeners de Like para TODOS os botões de like
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.removeEventListener('click', handleLikeClick);
+            button.addEventListener('click', handleLikeClick);
+        });
+
+        // B. Anexar Listeners de Excluir para a Galeria
+        document.querySelectorAll('.gallery-post-card .delete-button').forEach(button => {
+            button.removeEventListener('click', handleDeleteImageClick);
+            button.addEventListener('click', handleDeleteImageClick);
+        });
+
+        // C. Anexar Listeners para os Depoimentos
+        attachTestimonialListeners();
+    }
+        });
+
+        // B. Anexar Listeners de Excluir para a Galeria
+        document.querySelectorAll('.gallery-post-card .delete-button').forEach(button => {
+            button.removeEventListener('click', handleDeleteImageClick);
+            button.addEventListener('click', handleDeleteImageClick);
+        });
+
+        // C. Anexar Listeners para os Depoimentos
+        attachTestimonialListeners();
+    }
+
+
+    // ===============================================
+    // LÓGICA: GALERIA DE DESENHOS (Mantida)
+    // ===============================================
+
+    function createPostCardHTML(fileURL, postId, likes = 0) {
+        return `
+            <img src="${fileURL}" alt="Desenho de Aluno" class="post-image">
+            <div class="post-actions">
+                <button class="like-button" data-post-id="${postId}">
+                    <i class="far fa-heart"></i>
+                    <span class="like-count">${likes}</span>
+                </button>
+                <button class="delete-button" title="Excluir Desenho">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        `;
+    }
+  regrasdagaleria
+});
+// Funcionalidade para o botão de regras da galeria
+const toggleButton = document.getElementById('toggle-rules');
+const rulesContent = document.getElementById('rules-content');
+main
+
+
+    // ===============================================
+    // LÓGICA: GALERIA DE DESENHOS (Mantida)
+    // ===============================================
+
+    function createPostCardHTML(fileURL, postId, likes = 0) {
+        return `
+            <img src="${fileURL}" alt="Desenho de Aluno" class="post-image">
+            <div class="post-actions">
+                <button class="like-button" data-post-id="${postId}">
+                    <i class="far fa-heart"></i>
+                    <span class="like-count">${likes}</span>
+                </button>
+                <button class="delete-button" title="Excluir Desenho">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        `;
+    }
+
+    function handleDeleteImageClick(e) {
+        const button = e.currentTarget;
+        if (confirm("Tem certeza que deseja remover este desenho da galeria?")) {
+            const postCard = button.closest('.gallery-post-card');
+            if (postCard) {
+                const slot = postCard.dataset.slot;
+                postCard.remove();
+                
+                const newUploadCard = document.createElement('div');
+                newUploadCard.className = 'gallery-upload-card gallery-item';
+                newUploadCard.dataset.slot = slot;
+                newUploadCard.innerHTML = `
+                    <label for="file-upload-${slot}" class="upload-label">
+                        <i class="fas fa-plus upload-icon"></i>
+                        <span class="upload-text">Postar Desenho</span>
+                    </label>
+                    <input type="file" id="file-upload-${slot}" accept="image/*" style="display: none;">
+                `;
+                
+                document.querySelector('.gallery-grid').appendChild(newUploadCard);
+                attachInteractionListeners(); 
+                console.log(`[FRONTEND SIMULAÇÃO - Desenho] Post ID ${postCard.dataset.postId} removido.`);
+            }
+        }
+    }
+
+    document.querySelectorAll('.gallery-upload-card').forEach(card => {
+        const slot = card.dataset.slot;
+        const fileInput = document.getElementById(`file-upload-${slot}`);
+
+        card.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'INPUT') { 
+                 fileInput.click();
+            }
         });
     
         fileInput.addEventListener('change', (e) => {
@@ -24,6 +165,65 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
+
+    function handleDeleteImageClick(e) {
+        const button = e.currentTarget;
+        if (confirm("Tem certeza que deseja remover este desenho da galeria?")) {
+            const postCard = button.closest('.gallery-post-card');
+            if (postCard) {
+                const slot = postCard.dataset.slot;
+                postCard.remove();
+                
+                const newUploadCard = document.createElement('div');
+                newUploadCard.className = 'gallery-upload-card gallery-item';
+                newUploadCard.dataset.slot = slot;
+                newUploadCard.innerHTML = `
+                    <label for="file-upload-${slot}" class="upload-label">
+                        <i class="fas fa-plus upload-icon"></i>
+                        <span class="upload-text">Postar Desenho</span>
+                    </label>
+                    <input type="file" id="file-upload-${slot}" accept="image/*" style="display: none;">
+                `;
+                
+                document.querySelector('.gallery-grid').appendChild(newUploadCard);
+                attachInteractionListeners(); 
+                console.log(`[FRONTEND SIMULAÇÃO - Desenho] Post ID ${postCard.dataset.postId} removido.`);
+            }
+        }
+    }
+
+    document.querySelectorAll('.gallery-upload-card').forEach(card => {
+        const slot = card.dataset.slot;
+        const fileInput = document.getElementById(`file-upload-${slot}`);
+
+        card.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'INPUT') { 
+                 fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const fileURL = URL.createObjectURL(file);
+                const postId = `img${Date.now()}`; 
+                
+                card.classList.remove('gallery-upload-card');
+                card.classList.add('gallery-post-card');
+                card.innerHTML = createPostCardHTML(fileURL, postId, 0); 
+                
+                attachInteractionListeners(); 
+                e.target.value = null; 
+            }
+        });
+    });
+main
+
+
+    // ===============================================
+    // LÓGICA: DEPOIMENTOS DE ALUNOS (Três Slots)
+    // ===============================================
     
 
     // Funcionalidade do formulário de comentários
@@ -79,17 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Funcionalidade de curtir na galeria
-    document.querySelectorAll('.gallery-item-container .like-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const isLiked = event.currentTarget.getAttribute('data-liked') === 'true';
-            if (!isLiked) {
-                const likeCountElement = event.currentTarget.parentNode.querySelector('.like-count');
-                let currentCount = parseInt(likeCountElement.innerText);
-                likeCountElement.innerText = currentCount + 1;
-                event.currentTarget.classList.add('liked');
-                event.currentTarget.setAttribute('data-liked', 'true');
-            }
-        });
-    });
-});
+    // Inicializa todos os listeners quando a página carrega
+    attachInteractionListeners();
+}); 
+main
