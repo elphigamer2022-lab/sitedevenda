@@ -151,19 +151,17 @@ main
                  fileInput.click();
             }
         });
-
+    
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                const file = e.target.files[0];
-                const fileURL = URL.createObjectURL(file);
-                const postId = `img${Date.now()}`; 
-                
-                card.classList.remove('gallery-upload-card');
-                card.classList.add('gallery-post-card');
-                card.innerHTML = createPostCardHTML(fileURL, postId, 0); 
-                
-                attachInteractionListeners(); 
-                e.target.value = null; 
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imgElement.src = e.target.result;
+                    imgElement.style.opacity = '1';
+                    overlay.style.display = 'none'; // Esconde a sobreposição do ícone
+                };
+                reader.readAsDataURL(file);
             }
         });
     });
@@ -227,116 +225,57 @@ main
     // LÓGICA: DEPOIMENTOS DE ALUNOS (Três Slots)
     // ===============================================
     
-    // Gera o HTML de um depoimento (Estrelas movidas para o footer/actions)
-    function createTestimonialHTML(author, quote, rating, postId, isAuthor = true, likes = 0) {
-        const fullStars = '<i class="fas fa-star"></i>'.repeat(rating);
-        const emptyStars = '<i class="far fa-star"></i>'.repeat(5 - rating);
-        // Exibe Edit/Remove apenas se for o 'dono' (simulação)
-        const displayStyle = isAuthor ? '' : 'style="display: none;"'; 
 
-        return `
-            <div class="testimonial-header">
-                <div class="testimonial-info">
-                    <p class="testimonial-author">${author}</p>
-                    </div>
-            </div>
-            <p class="testimonial-quote">"${quote}"</p>
-            
-            <div class="testimonial-actions">
-                <div class="star-rating footer-rating" data-rating="${rating}">
-                    ${fullStars}${emptyStars}
-                </div>
-
-                <div class="action-bar-right">
-                    <button class="action-button like-button" data-post-id="${postId}">
-                        <i class="far fa-heart"></i>
-                        <span class="like-count">${likes}</span>
-                    </button>
-                    <div class="management-buttons">
-                        <button class="action-button edit-button" title="Editar Depoimento" ${displayStyle}><i class="fas fa-pencil-alt"></i></button>
-                        <button class="action-button delete-button" title="Remover Depoimento" ${displayStyle}><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    // Handler para o clique na Lixeira do Depoimento
-    function handleDeleteTestimonialClick(e) {
-        const button = e.currentTarget;
-        if (confirm("Confirma a remoção deste depoimento? Somente o autor ou o admin pode remover.")) {
-            const postCard = button.closest('.testimonial-post-card');
-            if (postCard) {
-                const slot = postCard.dataset.slot; // Pega o slot para manter a ordem
-                
-                // Transforma o card de volta para "Adicionar Depoimento"
-                postCard.classList.remove('testimonial-post-card');
-                postCard.classList.add('testimonial-add-card');
-                postCard.removeAttribute('data-post-id');
-                postCard.innerHTML = `
-                    <button class="add-testimonial-button" title="Adicionar meu depoimento">
-                        <i class="fas fa-plus add-testimonial-icon"></i>
-                        <p>Adicionar meu Depoimento</p>
-                    </button>
+    // Funcionalidade do formulário de comentários
+    const commentForm = document.querySelector('.comment-form');
+    if (commentForm) {
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Impede o envio real do formulário
+    
+            const commentText = document.getElementById('comment-text').value;
+            const authorName = document.getElementById('author-name').value || 'Anônimo';
+    
+            if (commentText.trim() !== '') {
+                // Cria um novo card de depoimento
+                const newCard = document.createElement('div');
+                newCard.className = 'testimonial-card';
+                newCard.innerHTML = `
+                    <p class="testimonial-quote">"${commentText}"</p>
+                    <p class="testimonial-author">- ${authorName}</p>
                 `;
-                console.log(`[FRONTEND SIMULAÇÃO - Depoimento] Depoimento removido do Slot ${slot}.`);
-                attachInteractionListeners(); // Re-anexa listeners
+    
+                const testimonialGrid = document.querySelector('.testimonial-grid');
+                testimonialGrid.appendChild(newCard);
+    
+                // Limpa o formulário
+                commentForm.reset();
+    
+                alert('Comentário enviado com sucesso! (Funcionalidade de salvamento permanente requer um servidor e banco de dados)');
+            } else {
+                alert('Por favor, escreva um comentário.');
             }
-        }
-    }
-    
-    // Handler para o clique no botão de Adicionar/Editar
-    function handleAddEditClick(e) {
-        const button = e.currentTarget;
-        const isEdit = button.classList.contains('edit-button');
-        const card = isEdit ? button.closest('.testimonial-post-card') : button.closest('.testimonial-add-card');
-
-        // SIMULAÇÃO: Formulário simples
-        const author = prompt("Qual o seu nome?");
-        const quote = prompt("Deixe seu depoimento:");
-        let rating = parseInt(prompt("De 1 a 5, qual sua avaliação? (Digite o número)"));
-        
-        rating = isNaN(rating) || rating < 1 || rating > 5 ? 5 : rating;
-        
-        if (author && quote) { // Apenas valida se autor e quote existem
-            const postId = isEdit ? card.dataset.postId : `depo${Date.now()}`;
-            const slot = card.dataset.slot; // Mantém o slot
-            const likes = isEdit ? parseInt(card.querySelector('.like-count').textContent) : 0;
-            
-            // Transforma ou mantém o card como Postado
-            card.classList.remove('testimonial-add-card');
-            card.classList.add('testimonial-post-card');
-            card.dataset.postId = postId;
-            
-            // Aqui simulamos que o autor que acabou de postar é o dono (isAuthor: true)
-            card.innerHTML = createTestimonialHTML(author, quote, rating, postId, true, likes);
-            
-            console.log(`[FRONTEND SIMULAÇÃO - Depoimento] Depoimento ${isEdit ? 'editado' : 'postado'} no Slot ${slot}. ID: ${postId}`);
-            
-            attachInteractionListeners(); // Re-anexa listeners aos novos botões (Like, Edit, Delete)
-        } else {
-            console.log("[FRONTEND SIMULAÇÃO - Depoimento] Postagem/Edição cancelada.");
-        }
-    }
-    
-    // Função para anexar todos os listeners específicos de depoimento
-    function attachTestimonialListeners() {
-        // A. Adicionar Depoimento (em todos os slots .testimonial-add-card)
-        document.querySelectorAll('.add-testimonial-button').forEach(button => {
-            button.removeEventListener('click', handleAddEditClick);
-            button.addEventListener('click', handleAddEditClick);
         });
+    }
 
-        // B. Editar Depoimento (apenas nos posts que têm a permissão visual)
-        document.querySelectorAll('.testimonial-post-card .edit-button').forEach(button => {
-            button.removeEventListener('click', handleAddEditClick);
-            button.addEventListener('click', handleAddEditClick);
-        });
-        
-        // C. Remover Depoimento (apenas nos posts que têm a permissão visual)
-        document.querySelectorAll('.testimonial-post-card .delete-button').forEach(button => {
-            button.removeEventListener('click', handleDeleteTestimonialClick);
-            button.addEventListener('click', handleDeleteTestimonialClick);
+    // O código da barra de pesquisa foi mantido, mas a funcionalidade só será ativada se a barra de pesquisa existir na página.
+    // Isso é útil se você tiver uma barra de pesquisa em outras páginas, como na página de blog.
+    const searchBar = document.getElementById('course-search');
+    if (searchBar) { 
+        const courseCards = document.querySelectorAll('.course-card');
+
+        searchBar.addEventListener('keyup', (e) => {
+            const searchText = e.target.value.toLowerCase();
+
+            courseCards.forEach(card => {
+                const cardTitle = card.querySelector('h4').innerText.toLowerCase();
+                const cardDescription = card.querySelector('p').innerText.toLowerCase();
+
+                if (cardTitle.includes(searchText) || cardDescription.includes(searchText)) {
+                    card.style.display = 'block'; 
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         });
     }
 
