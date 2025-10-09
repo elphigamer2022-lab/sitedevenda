@@ -74,15 +74,60 @@ body {
 /* Seções da Página Inicial    */
 /* ============================ */
 .hero-section {
-    background: linear-gradient(rgba(0, 147, 255, 0.5), rgba(42, 108, 114)), url('https://via.placeholder.com/1500x500.png?text=Imagem+de+Fundo+Criativa') no-repeat center center/cover;
-    color: #ffffff;
-    padding: 8rem 0;
-    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(0, 147, 255, 0.5), rgba(42, 108, 114)) no-repeat center center/cover;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.slide-1 {
+    background: linear-gradient(rgba(0, 147, 255, 0.5), rgba(42, 108, 114)), url('https://via.placeholder.com/1500x500.png?text=Fundo+1') no-repeat center center/cover;
+}
+
+.slide-2 {
+    background: linear-gradient(rgba(0, 147, 255, 0.5), rgba(42, 108, 114)), url('https://via.placeholder.com/1500x500.png?text=Fundo+2') no-repeat center center/cover;
+}
+
+.slide-3 {
+    background: linear-gradient(rgba(0, 147, 255, 0.5), rgba(42, 108, 114)), url('https://via.placeholder.com/1500x500.png?text=Fundo+3') no-repeat center center/cover;
+}
+
+.slide-4 {
+    background: linear-gradient(rgba(0, 147, 255, 0.5), rgba(42, 108, 114)), url('https://via.placeholder.com/1500x500.png?text=Fundo+4') no-repeat center center/cover;
 }
 
 .hero-content {
     max-width: 700px;
     margin: 0 auto;
+    text-align: center;
+    color: #ffffff;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-content h2 {
@@ -106,8 +151,7 @@ body {
 .cta-button:hover {
     background-color: #e55a5a;
 }
-
-/* Os estilos para a seção de cursos foram removidos */
+/* O restante do CSS permanece inalterado */
 .testimonials-section, .gallery-section, .video-testimonial-section {
     padding: 4rem 0;
     text-align: center;
@@ -168,7 +212,6 @@ body {
     gap: 1.5rem;
 }
 
-/* ESTILOS ADICIONADOS PARA A GALERIA INTERATIVA */
 .gallery-item-container {
     position: relative;
     width: 100%;
@@ -217,7 +260,6 @@ body {
     opacity: 1;
 }
 
-/* ESTILOS ADICIONADOS PARA OS COMENTÁRIOS */
 .comment-form {
     display: flex;
     flex-direction: column;
@@ -247,15 +289,15 @@ body {
     font-size: 1rem;
 }
 
+.form-group textarea {
+    resize: vertical;
+}
+
 .testimonial-card.new-comment-form-container {
     background-color: #fff;
     padding: 2rem;
 }
 
-
-/* ======================== */
-/* Seção de Vídeo Testemunho */
-/* ======================== */
 .video-testimonial-section {
     background-color: var(--card-background); /* Ou var(--background-color) se preferir */
     padding: 5rem 0;
@@ -280,14 +322,13 @@ body {
 .video-wrapper {
     position: relative;
     width: 100%;
-    /* Proporção 16:9 para vídeos */
-    padding-bottom: 56.25%; /* (9 / 16) * 100 */
+    padding-bottom: 56.25%;
     height: 0;
-    margin: 0 auto 3rem auto; /* Centraliza e adiciona espaço abaixo */
-    max-width: 900px; /* Largura máxima do vídeo */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra mais pronunciada */
+    margin: 0 auto 3rem auto;
+    max-width: 900px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     border-radius: 10px;
-    overflow: hidden; /* Garante que a borda arredondada funcione com o iframe */
+    overflow: hidden;
 }
 
 .video-wrapper iframe {
@@ -296,19 +337,15 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border: none; /* Remove a borda padrão do iframe */
+    border: none;
 }
 
 .video-cta {
-    margin-top: 2rem; /* Espaçamento extra para o botão abaixo do vídeo */
+    margin-top: 2rem;
     font-size: 1.1rem;
     padding: 15px 30px;
 }
 
-
-/* ============================== */
-/* Páginas de Curso, Sobre e Contato  */
-/* ============================== */
 .course-details-section, .about-section, .contact-section, .blog-section {
     padding: 4rem 0;
 }
@@ -414,16 +451,24 @@ body {
     margin-bottom: 2rem;
 }
 
-
+.about-content {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
 }
 
-.blog-title {
-    font-size: 2.8rem;
-    text-align: center;
-    margin-bottom: 2rem;
+.about-image {
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.blog-subtitle {
+.about-text p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.contact-description, .blog-subtitle {
     text-align: center;
     font-size: 1.1rem;
     color: #666;
@@ -507,9 +552,6 @@ body {
     font-weight: 600;
 }
 
-/* ============================ */
-/* Rodapé (Comum)             */
-/* ============================ */
 .footer {
     background-color: var(--secondary-color);
     color: #ffffff;
@@ -518,23 +560,22 @@ body {
 
 .footer-content {
     display: flex;
-    flex-direction: column; /* Altera a direção para coluna */
-    justify-content: center; /* Centraliza verticalmente */
-    align-items: center; /* Centraliza horizontalmente */
-    text-align: center; /* Centraliza o texto */
-    gap: 1.5rem; /* Espaçamento entre os itens */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
 }
 
 .footer-info {
     font-size: 0.9rem;
-    /* Remove a margem fixa que causava o desalinhamento em telas maiores */
     margin: 0;
 }
 
 .social-links {
     display: flex;
     gap: 1.5rem;
-    justify-content: center; /* Centraliza os ícones */
+    justify-content: center;
 }
 
 .social-links a {
@@ -547,9 +588,6 @@ body {
     color: var(--primary-color);
 }
 
-/* ============================ */
-/* Responsividade para Mobile  */
-/* ============================ */
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
@@ -603,73 +641,4 @@ body {
         padding: 12px 25px;
         font-size: 1rem;
     }
-}
-/* ======================== */
-/* Regras da Galeria (Expansível) */
-/* ======================== */
-
-.rules-container {
-    background-color: var(--card-background);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin: 0 auto 3rem;
-    max-width: 800px;
-    text-align: left;
-}
-
-.rules-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.rules-header p {
-    flex: 1;
-    margin: 0;
-    font-size: 1rem;
-    color: #555;
-}
-
-.toggle-button {
-    background-color: #f0f0f0;
-    color: var(--secondary-color);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-button:hover {
-    background-color: #e0e0e0;
-}
-
-.rules-content {
-    margin-top: 1.5rem;
-    /* Transições para o efeito de "abrir e fechar" */
-    max-height: 500px; /* Um valor alto para garantir que o conteúdo caiba */
-    overflow: hidden;
-    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
-    opacity: 1;
-}
-
-.rules-content.hidden {
-    max-height: 0;
-    opacity: 0;
-    margin-top: 0;
-}
-
-.gallery-rules-list {
-    list-style-type: disc;
-    padding-left: 20px;
-    font-size: 0.95rem;
-    line-height: 1.8;
-}
-
-.gallery-rules-list li {
-    margin-bottom: 0.5rem;
 }
